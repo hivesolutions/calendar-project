@@ -29,7 +29,7 @@ TIME_ZONE = 'America/Chicago'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
 
-SITE_ID = 1
+SITE_ID = u'4fd769ea6b818aaf3200001c'
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -116,6 +116,8 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'django_mongodb_engine',
+    'home',
 )
 
 # A sample logging configuration. The only tangible logging

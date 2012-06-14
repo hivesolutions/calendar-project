@@ -3,5 +3,17 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-  <h1>Hello World from TodoApp</h1>
+  {% if user.is_authenticated %}
+    {% include "calendar.html" %}
+  {% else %}
+
+    <h1>Wellcome to TodoApp Calendar</h1>
+
+  {% endif %}
+  
+{% endblock %}
+
+{% block javascript %}
+  <script type="text/javascript" src="{{ STATIC_URL }}js/fullcalendar.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}js/application.js"></script>
 {% endblock %}

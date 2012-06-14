@@ -122,10 +122,20 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'django_mongodb_engine',
     'registration',
+    'accounts',
     'cal',
 )
 
+LOGIN_URL = "/accounts/login"
+AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 ACCOUNT_ACTIVATION_DAYS = 7
+
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'testing@example.com'
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

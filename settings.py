@@ -130,6 +130,8 @@ LOGIN_URL = "/accounts/login"
 AUTH_PROFILE_MODULE = 'accounts.UserProfile'
 ACCOUNT_ACTIVATION_DAYS = 7
 
+AUTH_HEADER = 'X-Api-Authorization'
+
 EMAIL_HOST = 'localhost'
 EMAIL_PORT = 1025
 EMAIL_HOST_USER = ''

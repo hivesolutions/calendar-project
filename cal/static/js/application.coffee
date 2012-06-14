@@ -2,11 +2,25 @@ $(document).ready () ->
   calendar = $('#calendar')
   todo_form = $('#todo-form')
 
+  public = () ->
+    url = document.URL
+    frag = url.split('public')
+    if frag.length == 2
+      frag[1] 
+    else 
+      "/"
+
   calendar.fullCalendar
-    events: [{
-            title  : 'event1',
-            start  : '2012-06-13'
-        }]
+    eventSources: [
+      {
+        url: '/todos'+public()
+        type: 'GET'
+        error: () ->
+            alert('there was an error while fetching events!')
+        color: 'yellow'
+        textColor: 'black'
+      }
+    ]
     header:
         left: 'prev,next today'
         center: 'title'
@@ -31,5 +45,31 @@ $(document).ready () ->
     title = $("#todo-title").val()
     event.title = title
     calendar.fullCalendar 'renderEvent', event, true
-    todo_form.modal 'toggle'
+    $.post "/todos/", JSON.stringify({
+      start: event.start.toISOString()
+      title: event.title
+    }), (data) ->
+      todo_form.modal 'toggle'
+
+  $('#share').on 'click', () ->
+    href = $(this).attr('href')
+    $.ajax
+      type: 'POST',
+      url: href,
+      success: () ->
+        $('#unshare').show()
+        $('#share-calendar').modal 'toggle'
+    false
+      
+
+  $('#unshare').on 'click', () ->
+    that = $(this)
+    href = that.attr('href')
+    $.ajax
+      type: 'POST',
+      url: href,
+      success: () ->
+        that.hide()
+    false
+      
 

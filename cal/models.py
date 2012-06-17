@@ -1,5 +1,4 @@
 from django.db import models
-from djangotoolbox.fields import ListField, EmbeddedModelField
 
 
 class Calendar(models.Model):
@@ -23,6 +22,7 @@ class Todo(models.Model):
         return dict({'id': self.id,
           'title': self.title,
           'start': self.start.isoformat(),
+          'end': self.end.isoformat() if self.end else None,
           'done': self.done,
           }.items() +
           ({'calendar': self.calendar.to_hash()}.items() if not ignore_cal else []))

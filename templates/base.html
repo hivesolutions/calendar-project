@@ -7,6 +7,8 @@
     <meta name="author" content="">
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-1.8.21.custom.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/jquery-ui-timepicker-addon.css" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/fullcalendar.css" />
     <title>TodoApp {% block title %}{% endblock %}</title>
     <style type="text/css">
@@ -69,9 +71,11 @@
     </div>
 
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-1.7.2.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.17.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-1.8.21.custom.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery-ui-timepicker-addon.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/bootstrap-modal.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/moment.min.js"></script>
     {% block javascript %}{% endblock %}
 
   </body>

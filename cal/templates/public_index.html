@@ -6,13 +6,11 @@
   {% if user.is_authenticated %}
     <div class="row">
       <h1>Public calendar from {{ owner.username }}</h1>
-      <hr/>
     </div>
+    <hr/>
     {% include "calendar.html" %}
   {% else %}
-
     <h1>Wellcome to TodoApp Calendar</h1>
-
   {% endif %}
   
 {% endblock %}

@@ -13,8 +13,12 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default' : {
-      'ENGINE' : 'django_mongodb_engine',
-      'NAME' : 'hive_todo'
+        'ENGINE' : 'django_mongodb_engine',
+        'NAME' : os.environ.get('DB_NAME', 'hive_todo')
+        'USER': os.environ.get('DB_USER', '')
+        'PASSWORD': os.environ.get('DB_PWD', '')
+        'HOST': os.environ.get('DB_HOST', '')
+        'PORT': os.environ.get('DB_PORT', '')
    }
 }
 
@@ -132,12 +136,12 @@ ACCOUNT_ACTIVATION_DAYS = 7
 
 AUTH_HEADER = 'X-Api-Authorization'
 
-EMAIL_HOST = 'localhost'
-EMAIL_PORT = 1025
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
-EMAIL_USE_TLS = False
-DEFAULT_FROM_EMAIL = 'testing@example.com'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD', '')
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER', '')
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to

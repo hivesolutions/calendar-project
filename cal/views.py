@@ -1,11 +1,15 @@
 import json
+import logging
 import dateutil.parser
+
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from models import Calendar, Todo
 from accounts.models import UserProfile
+
+logger = logging.getLogger(__name__)
 
 
 def index(request):
@@ -43,17 +47,41 @@ def unshare(request, id):
 
 
 @login_required
-def todos(request, id=None):
-    current_calendar = request.user.get_profile().calendar if not id else Calendar.objects.get(id=id)
+def todos(request):
+    try:
+        calendar_id = request.GET.get('calendar')
+        current_calendar = Calendar.objects.get(id=calendar_id)
+    except Exception:
+        current_calendar = request.user.get_profile().calendar
+
     if request.method == 'POST':
         #TODO: test JSON
         result = json.loads(request.raw_post_data)
-        print result
+        id = result.get('id', None)
         start = dateutil.parser.parse(result['start']).astimezone(dateutil.tz.tzutc())
-        print start
-        todo = Todo.objects.create(title=result['title'], start=start,
-            calendar=current_calendar)
+        end = dateutil.parser.parse(result['end']).astimezone(dateutil.tz.tzutc())
+
+        if id:
+            Todo.objects.filter(id=id).update(title=result.get('title'),
+                start=start, end=end, calendar=current_calendar)
+            todo = Todo.objects.get(id=id)
+        else:
+            todo = Todo.objects.create(title=result['title'], start=start, end=end,
+                calendar=current_calendar)
+
         return HttpResponse(json.dumps(todo.to_hash()), content_type='application/json')
     else:
         todos = [todo.to_hash(ignore_cal=True) for todo in Todo.objects.filter(calendar__id=current_calendar.id)]
         return HttpResponse(json.dumps(todos), content_type='application/json')
+
+
+@login_required
+def delete(request):
+    result = json.loads(request.raw_post_data)
+    todo = Todo.objects.get(id=result['id'])
+    todo.delete()
+    return HttpResponse(json.dumps(todo.to_hash()), content_type='application/json')
+
+
+
+

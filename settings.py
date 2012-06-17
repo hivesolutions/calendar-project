@@ -16,9 +16,9 @@ DATABASES = {
         'ENGINE': 'django_mongodb_engine',
         'NAME': os.environ.get('DB_NAME', 'hive_todo'),
         'USER': os.environ.get('DB_USER', ''),
-        'PASSWORD': os.environ.get('DB_PWD', '0'),
+        'PASSWORD': os.environ.get('DB_PWD', ''),
         'HOST': os.environ.get('DB_HOST', ''),
-        'PORT': os.environ.get('DB_PORT', '')
+        'PORT': int(os.environ.get('DB_PORT', '27017'))
    }
 }
 

@@ -1,4 +1,5 @@
 $(document).ready () ->
+  moment.defaultFormat = 'YYYY-MM-DDTHH:mm:ss'
   calendar = $('#calendar')
   todo_form = $('#todo-form')
   todo_edit_form = $('#todo-edit-form')
@@ -71,11 +72,11 @@ $(document).ready () ->
     title = $("#todo-title").val()
     event.title = title
     #TODO: we should use moment.js here
-    event.start = new Date(Date.parse($("#todo-add-start").val()))
-    event.end = new Date(Date.parse($("#todo-add-end").val()))
+    event.start = moment($("#todo-add-start").val(), 'YYYY-MM-DD HH:mm:ss').toDate()
+    event.end = moment($("#todo-add-end").val(), 'YYYY-MM-DD HH:mm:ss').toDate()
     data = remote_data()
-    data.start = event.start.toISOString()
-    data.end = event.end.toISOString()
+    data.start = moment(event.start).format()
+    data.end = moment(event.end).format()
     data.title = event.title
     $.post "/todos/create", JSON.stringify(data), (data) ->
       event.id = data.id
@@ -85,14 +86,14 @@ $(document).ready () ->
   $('#todo-edit').on 'click', () ->
     event = todo_edit_form.data 'eventObject'
     event.title = $("#todo-edit-title").val()
-    event.start = new Date(Date.parse($("#todo-edit-start").val()))
-    event.end = new Date(Date.parse($("#todo-edit-end").val()))
+    event.start = moment($("#todo-edit-start").val(), 'YYYY-MM-DD HH:mm:ss').toDate()
+    event.end = moment($("#todo-edit-end").val(), 'YYYY-MM-DD HH:mm:ss').toDate()
     calendar.fullCalendar 'removeEvents', [event.id]
     calendar.fullCalendar 'renderEvent', event, true
     data = remote_data()
     data.id = event.id
-    data.start = event.start.toISOString()
-    data.end = event.end.toISOString()
+    data.start = moment(event.start).format()
+    data.end = moment(event.end).format()
     data.title = event.title
     $.post "/todos/edit/", JSON.stringify(data), (data) ->
       todo_edit_form.modal 'toggle'
@@ -102,6 +103,7 @@ $(document).ready () ->
     calendar.fullCalendar 'removeEvents', [event.id]
     data = remote_data()
     data.id = event.id
+    console.log data
     $.post "/todos/delete", JSON.stringify(data), (data) ->
       todo_edit_form.modal 'toggle'
 

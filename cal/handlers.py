@@ -78,13 +78,13 @@ class TodoHandler(BaseHandler):
         try:
             profile = is_authenticated(request)
             calendar = get_calendar(profile, request.GET.get('calendar', None))
-
             result = json.loads(request.raw_post_data)
             start = dateutil.parser.parse(result['start'])
             end = dateutil.parser.parse(result['end'])
             todo = Todo.objects.create(title=result['title'], start=start, end=end,
                 calendar=calendar)
-            return json_response(todo)
+            print todo
+            return json_response(todo.to_hash())
         except Exception:
             return rc.FORBIDDEN
 

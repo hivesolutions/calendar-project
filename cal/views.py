@@ -48,18 +48,16 @@ def unshare(request, id):
 
 @login_required
 def todos(request):
-    try:
-        calendar_id = request.GET.get('calendar')
-        current_calendar = Calendar.objects.get(id=calendar_id)
-    except Exception:
-        current_calendar = request.user.get_profile().calendar
-
+    user_calendar = request.user.get_profile().calendar
     if request.method == 'POST':
         #TODO: test JSON
         result = json.loads(request.raw_post_data)
+
+        calendar_id = result.get('calendar', user_calendar.id)
+        current_calendar = Calendar.objects.get(id=calendar_id)
         id = result.get('id', None)
-        start = dateutil.parser.parse(result['start']).astimezone(dateutil.tz.tzutc())
-        end = dateutil.parser.parse(result['end']).astimezone(dateutil.tz.tzutc())
+        start = dateutil.parser.parse(result['start'])
+        end = dateutil.parser.parse(result['end'])
 
         if id:
             Todo.objects.filter(id=id).update(title=result.get('title'),
@@ -71,6 +69,11 @@ def todos(request):
 
         return HttpResponse(json.dumps(todo.to_hash()), content_type='application/json')
     else:
+        try:
+            calendar_id = request.GET.get('calendar')
+            current_calendar = Calendar.objects.get(id=calendar_id)
+        except Exception:
+            current_calendar = user_calendar
         todos = [todo.to_hash(ignore_cal=True) for todo in Todo.objects.filter(calendar__id=current_calendar.id)]
         return HttpResponse(json.dumps(todos), content_type='application/json')
 

@@ -11,6 +11,7 @@ import dateutil.parser
 
 #TODO: make this one a decorator
 def is_authenticated(request):
+    print request.META
     auth_header = 'HTTP_%s' % getattr(settings, 'AUTH_HEADER')
     upper_auth_header = auth_header.upper().replace('-', '_')
     print auth_header

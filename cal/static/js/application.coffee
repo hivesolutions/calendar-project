@@ -115,8 +115,7 @@ $(document).ready () ->
       success: () ->
         $('#unshare').show()
         $('#share-calendar').modal 'toggle'
-    false
-      
+    false   
 
   $('#unshare').on 'click', () ->
     that = $(this)

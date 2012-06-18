@@ -12,8 +12,11 @@ import dateutil.parser
 #TODO: make this one a decorator
 def is_authenticated(request):
     auth_header = getattr(settings, 'AUTH_HEADER')
-    auth_header = 'HTTP_%s' % (auth_header.upper().replace('-', '_'))
-    auth_string = request.META.get(auth_header)
+    upper_auth_header = 'HTTP_%s' % (auth_header.upper().replace('-', '_'))
+    print auth_header
+    print upper_auth_header
+    auth_string = request.META.get(upper_auth_header, request.META.get(auth_header))
+    print auth_string
     return UserProfile.objects.get(api_key=auth_string)
 
 
@@ -64,6 +67,7 @@ class TodoHandler(BaseHandler):
     allowed_methods = ('GET', 'POST', 'PUT', 'DELETE')
 
     def read(self, request):
+
         try:
             profile = is_authenticated(request)
             calendar = get_calendar(profile, request.GET.get('calendar', None))
